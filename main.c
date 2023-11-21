@@ -1,32 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Estrutura da Pilha
-typedef struct Pilha
-{
-    int *array;
+#define MAX_DISKS 100
+
+typedef struct {
+    int items[MAX_DISKS];
     int top;
-    unsigned capacity;
 } Pilha;
 
-// Função para criar uma pilha vazia com capacidade 
-Pilha *criar(unsigned capacity)
-{
-    Pilha *stack = (Pilha *)malloc(sizeof(Pilha));
-    stack->capacity = capacity;
-    stack->top = -1;
-    stack->array = (int *)malloc(stack->capacity * sizeof(int));
-    return stack;
+void inicializar(Pilha *pilha) {
+    pilha->top = -1;
 }
 
-// Função para verificar se a pilha está cheia
-int isFull(Pilha *stack)
-{
-    return (stack->top == stack->capacity - 1);
+int estaVazia(Pilha *pilha) {
+    return pilha->top == -1;
 }
 
-// Função para verificar se a pilha está vazia
-int isEmpty(Pilha *stack)
-{
-    return (stack->top == -1);
+int estaCheia(Pilha *pilha) {
+    return pilha->top == MAX_DISKS - 1;
+}
+
+void empilhar(Pilha *pilha, int disco) {
+    if (!estaCheia(pilha)) {
+        pilha->items[++pilha->top] = disco;
+    }
 }
