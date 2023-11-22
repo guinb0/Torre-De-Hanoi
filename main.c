@@ -62,3 +62,41 @@ void imprimirTorres(Pilha *torres, int numDiscos) {
 
     printf("\n\n");
 }
+
+int main() {
+    int numDiscos;
+    printf("Digite o número de discos: ");
+    scanf("%d", &numDiscos);
+
+    Pilha torre1, torre2, torre3;
+    inicializar(&torre1);
+    inicializar(&torre2);
+    inicializar(&torre3);
+
+    resetarTorres(&torre1, &torre2, &torre3, numDiscos);
+
+    do {
+        imprimirTorres((Pilha[]){torre1, torre2, torre3}, numDiscos);
+
+        int torreOrigem, torreDestino;
+        printf("Digite o número da torre de origem (1, 2 ou 3): ");
+        scanf("%d", &torreOrigem);
+
+        printf("Digite o número da torre de destino (1, 2 ou 3): ");
+        scanf("%d", &torreDestino);
+
+        Pilha *pilhaOrigem, *pilhaDestino;
+        switch (torreOrigem) {
+            case 1:
+                pilhaOrigem = &torre1;
+                break;
+            case 2:
+                pilhaOrigem = &torre2;
+                break;
+            case 3:
+                pilhaOrigem = &torre3;
+                break;
+            default:
+                printf("Torre de origem inválida.\n");
+                continue;
+        }
