@@ -99,4 +99,42 @@ int main() {
             default:
                 printf("Torre de origem inválida.\n");
                 continue;
+            switch (torreDestino) {
+            case 1:
+                pilhaDestino = &torre1;
+                break;
+            case 2:
+                pilhaDestino = &torre2;
+                break;
+            case 3:
+                pilhaDestino = &torre3;
+                break;
+            default:
+                printf("Torre de destino inválida.\n");
+                continue;
+        }
+
+        moverDisco(pilhaOrigem, pilhaDestino, torreOrigem + 'A' - 1, torreDestino + 'A' - 1);
+
+        int escolha;
+        printf("Deseja continuar movendo discos? (1: Sim, 0: Não): ");
+        scanf("%d", &escolha);
+
+        if (escolha == 0) {
+            break;
+        }
+
+    } while (1);
+
+    int reiniciar;
+    printf("Deseja reiniciar as torres? (1: Sim, 0: Não): ");
+    scanf("%d", &reiniciar);
+
+    if (reiniciar == 1) {
+        resetarTorres(&torre1, &torre2, &torre3, numDiscos);
+        imprimirTorres((Pilha[]){torre1, torre2, torre3}, numDiscos);
+    }
+
+    return 0;
+}
         }
