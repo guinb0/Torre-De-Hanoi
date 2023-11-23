@@ -62,6 +62,33 @@ void imprimirTorres(Pilha *torres, int numDiscos) {
 
     printf("\n\n");
 }
+int verificarMovimentoValido(Pilha *origem, Pilha *destino) {
+    // Verificar se a torre de destino está vazia ou se o topo da torre de destino é maior que o disco a ser movido
+    return estaVazia(destino) || origem->items[origem->top] < destino->items[destino->top];
+}
+
+void moverDisco(Pilha *origem, Pilha *destino, char nomeOrigem, char nomeDestino) {
+    if (verificarMovimentoValido(origem, destino)) {
+        int disco = desempilhar(origem);
+        if (disco != -1) {
+            empilhar(destino, disco);
+            printf("Mover disco %d da Torre %c para a Torre %c\n", disco, nomeOrigem, nomeDestino);
+        }
+    } else {
+        printf("Movimento inválido. Impossível colocar um disco maior em cima de um disco menor.\n");
+    }
+}
+
+void resetarTorres(Pilha *torre1, Pilha *torre2, Pilha *torre3, int numDiscos) {
+    inicializar(torre1);
+    inicializar(torre2);
+    inicializar(torre3);
+
+    // Empilhar os discos na torre 1
+    for (int i = numDiscos; i >= 1; i--) {
+        empilhar(torre1, i);
+    }
+}
 
 int main() {
     int numDiscos;
