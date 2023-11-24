@@ -25,11 +25,6 @@ void empilhar(Pilha *pilha, int disco) {
         pilha->items[++pilha->top] = disco;
     }
 }
-void empilhar(Pilha *pilha, int disco) {
-    if (!estaCheia(pilha)) {
-        pilha->items[++pilha->top] = disco;
-    }
-}
 int desempilhar(Pilha *pilha) {
     if (!estaVazia(pilha)) {
         return pilha->items[pilha->top--];
