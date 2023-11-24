@@ -99,14 +99,21 @@ void resetarTorres(Pilha *torre1, Pilha *torre2, Pilha *torre3, int numDiscos) {
 int verificarVitoria(Pilha *torres[], int numDiscos) {
     Pilha *torre3 = torres[2];
 
-    // Verificar se todos os discos estão na torre 3 e em ordem correta
+    // Verificar se a torre 3 está cheia 
+    if (torre3->top != numDiscos - 1) {
+        return 0; // A torre 3 não está cheia
+    }
+
+    // Verificar se os discos estão em ordem correta
     for (int i = 0; i < numDiscos; i++) {
-        if (torre3->items[i] != i + 1) {
-            return 0; // Nem todos os discos estão na torre 3 ou estão fora de ordem
+        if (torre3->items[i] != numDiscos - i) {
+            return 0; //Os discos ou estão em falta
         }
     }
-    return 1; // Todos os discos estão na torre 3 e em ordem correta
+
+    return 1; // Todos os discos estão ordem correta 
 }
+
 
 //É a função main do código que executa todas as outras funções e faz o jogo Torre de Hanoi acontecer.
 int main() {
@@ -130,7 +137,6 @@ int main() {
     resetarTorres(&torre1, &torre2, &torre3, numDiscos);
     
     do {
-        printf("\033c");
         imprimirTorres((Pilha[]){torre1, torre2, torre3}, numDiscos);
         printf("\nNúmero de jogadas: %d\n", numJogadas);
         printf("\n");
@@ -142,7 +148,7 @@ int main() {
         printf("\nDeseja recomeçar o jogo? (1 - sim | 0 - Não)"); 
         scanf("%d", &escolha);
         if (escolha == 1){
-          printf("\n");
+          printf("\033c");
           return main();
         }else{
           exit(0);
@@ -156,7 +162,7 @@ int main() {
         printf("\nDeseja recomeçar o jogo? (1 - sim | 0 - Não)"); 
         scanf("%d", &escolha);
         if (escolha == 1){
-          printf("\n");
+          printf("\033c");
           return main();
         }else{
           exit(0);
@@ -198,7 +204,20 @@ int main() {
 
         moverDisco(pilhaOrigem, pilhaDestino, torreOrigem + 'A' - 1, torreDestino + 'A' - 1);
 
-        
+      if (verificarVitoria((Pilha *[]){&torre1, &torre2, &torre3}, numDiscos)) {
+          printf("\033c");
+          imprimirTorres((Pilha[]){torre1, torre2, torre3}, numDiscos);
+          printf("\nParabéns! Número de movimentos: %d\n", numJogadas);
+          printf("\nDeseja recomeçar o jogo? (1 - sim | 0 - Não)"); 
+          scanf("%d", &escolha);
+          if (escolha == 1){
+            printf("\n");
+            return main();
+          }else{
+            exit(0);
+          }
+      }
+    printf("\033c");
     } while (1);
 
     return 0;
