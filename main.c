@@ -11,6 +11,19 @@ typedef struct {
 void inicializar(Pilha *pilha) {
     pilha->top = -1;
 }
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_DISKS 100
+
+typedef struct {
+    int items[MAX_DISKS];
+    int top;
+} Pilha;
+
+void inicializar(Pilha *pilha) {
+    pilha->top = -1;
+}
 
 int estaVazia(Pilha *pilha) {
     return pilha->top == -1;
@@ -45,7 +58,7 @@ void imprimirTorres(Pilha *torres, int numDiscos) {
             } else {
                 printf("");
             }
-           printf("");
+            printf("                    ");
         }
         printf("\n");
     }
@@ -58,6 +71,7 @@ void imprimirTorres(Pilha *torres, int numDiscos) {
 
     printf("\n\n");
 }
+
 int verificarMovimentoValido(Pilha *origem, Pilha *destino) {
     // Verificar se a torre de destino está vazia ou se o topo da torre de destino é maior que o disco a ser movido
     return estaVazia(destino) || origem->items[origem->top] < destino->items[destino->top];
@@ -86,8 +100,19 @@ void resetarTorres(Pilha *torre1, Pilha *torre2, Pilha *torre3, int numDiscos) {
     }
 }
 
+int verificarVitoria(Pilha *torres[], int numDiscos) {
+    Pilha *torre3 = torres[2];
+
+    // Verificar se todos os discos estão na torre 3 e em ordem correta
+    for (int i = 0; i < numDiscos; i++) {
+        if (torre3->items[i] != i + 1) {
+            return 0; // Não todos os discos estão na torre 3 ou estão fora de ordem
+        }
+    }
+    return 1; // Todos os discos estão na torre 3 e em ordem correta
+}
+
 int main() {
-    int numJogadas;
     int numDiscos;
     printf("Digite o número de discos: ");
     scanf("%d", &numDiscos);
@@ -111,35 +136,34 @@ int main() {
 
         Pilha *pilhaOrigem, *pilhaDestino;
         switch (torreOrigem) {
-    case 1:
-        pilhaOrigem = &torre1;
-        break;
-    case 2:
-        pilhaOrigem = &torre2;
-        break;
-    case 3:
-        pilhaOrigem = &torre3;
-        break;
-    default:
-        printf("Torre de origem inválida.\n");
-        continue;
-}
+            case 1:
+                pilhaOrigem = &torre1;
+                break;
+            case 2:
+                pilhaOrigem = &torre2;
+                break;
+            case 3:
+                pilhaOrigem = &torre3;
+                break;
+            default:
+                printf("Torre de origem inválida.\n");
+                continue;
+        }
 
-switch (torreDestino) {
-    case 1:
-        pilhaDestino = &torre1;
-        break;
-    case 2:
-        pilhaDestino = &torre2;
-        break;
-    case 3:
-        pilhaDestino = &torre3;
-        break;
-    default:
-        printf("Torre de destino inválida.\n");
-        continue;
-}
-
+        switch (torreDestino) {
+            case 1:
+                pilhaDestino = &torre1;
+                break;
+            case 2:
+                pilhaDestino = &torre2;
+                break;
+            case 3:
+                pilhaDestino = &torre3;
+                break;
+            default:
+                printf("Torre de destino inválida.\n");
+                continue;
+        }
 
         moverDisco(pilhaOrigem, pilhaDestino, torreOrigem + 'A' - 1, torreDestino + 'A' - 1);
 
@@ -148,20 +172,23 @@ switch (torreDestino) {
         scanf("%d", &escolha);
 
         if (escolha == 0) {
-            return main();
-            break;
+            if (verificarVitoria((Pilha[]){&torre1, &torre2, &torre3}, numDiscos)) {
+                printf("\nParabéns! Você venceu o jogo!\n");
+
+                int jogarNovamente;
+                printf("Deseja jogar novamente? (1: Sim, 0: Não): ");
+                scanf("%d", &jogarNovamente);
+
+                if (jogarNovamente == 1) {
+                    resetarTorres(&torre1, &torre2, &torre3, numDiscos);
+                    continue; 
+                } else {
+                    break; 
+                }
+            }
         }
 
     } while (1);
-     
-    int reiniciar;
-    printf("Deseja reiniciar as torres? (1: Sim, 0: Não): ");
-    scanf("%d", &reiniciar);
-
-    if (reiniciar == 1) {
-        resetarTorres(&torre1, &torre2, &torre3, numDiscos);
-        imprimirTorres((Pilha[]){torre1, torre2, torre3}, numDiscos);
-    }
 
     return 0;
 }
