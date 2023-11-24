@@ -25,6 +25,7 @@ void empilhar(Pilha *pilha, int disco) {
         pilha->items[++pilha->top] = disco;
     }
 }
+
 int desempilhar(Pilha *pilha) {
     if (!estaVazia(pilha)) {
         return pilha->items[pilha->top--];
@@ -109,32 +110,35 @@ int main() {
 
         Pilha *pilhaOrigem, *pilhaDestino;
         switch (torreOrigem) {
-            case 1:
-                pilhaOrigem = &torre1;
-                break;
-            case 2:
-                pilhaOrigem = &torre2;
-                break;
-            case 3:
-                pilhaOrigem = &torre3;
-                break;
-            default:
-                printf("Torre de origem inválida.\n");
-                continue;
-            switch (torreDestino) {
-            case 1:
-                pilhaDestino = &torre1;
-                break;
-            case 2:
-                pilhaDestino = &torre2;
-                break;
-            case 3:
-                pilhaDestino = &torre3;
-                break;
-            default:
-                printf("Torre de destino inválida.\n");
-                continue;
-        }
+    case 1:
+        pilhaOrigem = &torre1;
+        break;
+    case 2:
+        pilhaOrigem = &torre2;
+        break;
+    case 3:
+        pilhaOrigem = &torre3;
+        break;
+    default:
+        printf("Torre de origem inválida.\n");
+        continue;
+}
+
+switch (torreDestino) {
+    case 1:
+        pilhaDestino = &torre1;
+        break;
+    case 2:
+        pilhaDestino = &torre2;
+        break;
+    case 3:
+        pilhaDestino = &torre3;
+        break;
+    default:
+        printf("Torre de destino inválida.\n");
+        continue;
+}
+
 
         moverDisco(pilhaOrigem, pilhaDestino, torreOrigem + 'A' - 1, torreDestino + 'A' - 1);
 
@@ -159,4 +163,4 @@ int main() {
 
     return 0;
 }
-        }
+
