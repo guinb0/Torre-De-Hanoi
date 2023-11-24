@@ -1,4 +1,4 @@
-#include <stdio.h>
+include <stdio.h>
 #include <stdlib.h>
 
 #define MAX_DISKS 100
@@ -43,9 +43,9 @@ void imprimirTorres(Pilha *torres, int numDiscos) {
                     printf("* ");
                 }
             } else {
-                printf("| ");
+                printf("");
             }
-            printf("   ");
+           printf("");
         }
         printf("\n");
     }
@@ -53,7 +53,7 @@ void imprimirTorres(Pilha *torres, int numDiscos) {
     printf("\n");
 
     for (int i = 0; i < 3; i++) {
-        printf("  Torre %d  ", i + 1);
+        printf("Torre %d               ", i + 1);
     }
 
     printf("\n\n");
@@ -87,6 +87,7 @@ void resetarTorres(Pilha *torre1, Pilha *torre2, Pilha *torre3, int numDiscos) {
 }
 
 int main() {
+    int numJogadas;
     int numDiscos;
     printf("Digite o número de discos: ");
     scanf("%d", &numDiscos);
@@ -147,11 +148,12 @@ switch (torreDestino) {
         scanf("%d", &escolha);
 
         if (escolha == 0) {
+            return main();
             break;
         }
 
     } while (1);
-
+     
     int reiniciar;
     printf("Deseja reiniciar as torres? (1: Sim, 0: Não): ");
     scanf("%d", &reiniciar);
@@ -163,4 +165,3 @@ switch (torreDestino) {
 
     return 0;
 }
-
