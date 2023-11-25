@@ -150,6 +150,8 @@ int verificarVitoria(Pilha *torres[], int numDiscos) {
 
 //É a função main do código que executa todas as outras funções e faz o jogo Torre de Hanoi acontecer.
 int main() {
+    setlocale(LC_ALL, "Portuguese_Brazil");
+    
     int torreOrigem, torreDestino;
     int escolha;
     int numJogadas = 0;
