@@ -140,7 +140,7 @@ int verificarVitoria(Pilha *torres[], int numDiscos) {
     // Verificar se os discos estão em ordem correta
     for (int i = 0; i < numDiscos; i++) {
         if (torre3->items[i] != numDiscos - i) {
-            return 0; //Os discos ou estão em falta
+            return 0; //Os discos não estão na ordem correta
         }
     }
 
