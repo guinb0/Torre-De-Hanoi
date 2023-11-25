@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 
 //Define um "macro".
-#define MAX_DISKS 8 
+#define MAX_DISKS 8
 
 //Criando pilha
 typedef struct {
@@ -42,36 +43,68 @@ int desempilhar(Pilha *pilha) {
 
 //A função exibe visualmente o estado atual de três torres, representadas por uma estrutura Pilha, no console. Ela imprime asteriscos para representar os discos empilhados em cada torre.
 void imprimirTorres(Pilha *torres, int numDiscos) {
+    system("clear");  // Use "cls" no Windows / clear no resto
     printf("\nEstado Atual das Torres:\n\n");
+
+    // Largura fixa de cada disco
+    int larguraDisco = 5;
+    // Espaçamento entre torres
+    int espacamentoEntreTorres = 20;
 
     for (int i = numDiscos - 1; i >= 0; i--) {
         for (int j = 0; j < 3; j++) {
             if (i <= torres[j].top) {
+                // Calcular espaçamento para centralizar o disco
+                int espacosAntes = (larguraDisco - torres[j].items[i]) / 2;
+                int espacosDepois = larguraDisco - torres[j].items[i] - espacosAntes;
+
+                // Imprimir espaços antes do disco
+                for (int k = 0; k < espacosAntes; k++) {
+                    printf(" ");
+                }
+
+                // Imprimir o disco
                 for (int k = 0; k < torres[j].items[i]; k++) {
                     printf("*");
                 }
-              } else {
-                          printf("");
-                      }
-                      printf("                    ");
-                  }
-                  printf("\n");
-              }
 
-              printf("\n");
+                // Imprimir espaços depois do disco
+                for (int k = 0; k < espacosDepois; k++) {
+                    printf(" ");
+                }
+            } else {
+                // Imprimir espaços para manter o alinhamento
+                for (int k = 0; k < larguraDisco; k++) {
+                    printf(" ");
+                }
+            }
 
-              for (int i = 0; i < 3; i++) {
-                  printf("Torre %d               ", i + 1);
-              }
+            // Adicionar espaçamento entre as torres
+            for (int k = 0; k < espacamentoEntreTorres; k++) {
+                printf(" ");
+            }
+        }
+        printf("\n");
+    }
+
+    printf("\n");
+
+    for (int i = 0; i < 3; i++) {
+        printf("Torre %d               ", i + 1);
+    }
     printf("\n\n");
 }
+
+
+
+
 
 int verificarMovimentoValido(Pilha *origem, Pilha *destino) {
     // Verificar se a torre de destino está vazia ou se o topo da torre de destino         é maior que o disco a ser movido
     return estaVazia(destino) || origem->items[origem->top] < destino->items[destino->top];
 }
 
-//A função move um disco de uma torre para outra, validando o movimento. Se válido, realiza a movimentação e exibe uma mensagem; caso contrário, imprime uma mensagem de erro. 
+//A função move um disco de uma torre para outra, validando o movimento. Se válido, realiza a movimentação e exibe uma mensagem; caso contrário, imprime uma mensagem de erro.
 void moverDisco(Pilha *origem, Pilha *destino, char nomeOrigem, char nomeDestino) {
     if (verificarMovimentoValido(origem, destino)) {
         int disco = desempilhar(origem);
@@ -99,7 +132,7 @@ void resetarTorres(Pilha *torre1, Pilha *torre2, Pilha *torre3, int numDiscos) {
 int verificarVitoria(Pilha *torres[], int numDiscos) {
     Pilha *torre3 = torres[2];
 
-    // Verificar se a torre 3 está cheia 
+    // Verificar se a torre 3 está cheia
     if (torre3->top != numDiscos - 1) {
         return 0; // A torre 3 não está cheia
     }
@@ -111,7 +144,7 @@ int verificarVitoria(Pilha *torres[], int numDiscos) {
         }
     }
 
-    return 1; // Todos os discos estão ordem correta 
+    return 1; // Todos os discos estão ordem correta
 }
 
 
@@ -121,21 +154,22 @@ int main() {
     int escolha;
     int numJogadas = 0;
     int numDiscos;
+    printf("\033c");
     printf("Digite o número de discos (1 a 8): ");
-   
+
     scanf("%d", &numDiscos);
     while (numDiscos > 8 || numDiscos < 1) {
     printf("\nO Máximo permitido é de 8 discos, digite um valor válido:" );
     scanf("%d", &numDiscos);
   }
-  
+
     Pilha torre1, torre2, torre3;
     inicializar(&torre1);
     inicializar(&torre2);
     inicializar(&torre3);
 
     resetarTorres(&torre1, &torre2, &torre3, numDiscos);
-    
+
     do {
         imprimirTorres((Pilha[]){torre1, torre2, torre3}, numDiscos);
         printf("\nNúmero de jogadas: %d\n", numJogadas);
@@ -143,31 +177,29 @@ int main() {
         printf("\n|Para sair do jogo digite 0 ao invés do número da torre|\n");
         printf("Digite o número da torre de origem (1, 2 ou 3): ");
         scanf("%d", &torreOrigem);
-      
+
         if (torreOrigem == 0){
-        printf("\nDeseja recomeçar o jogo? (1 - sim | 0 - Não)"); 
+        printf("\nDeseja recomeçar o jogo? (1 - sim | 0 - Não)");
         scanf("%d", &escolha);
         if (escolha == 1){
-          printf("\033c");
           return main();
         }else{
           exit(0);
         }}
-      
+
         printf("Digite o número da torre de destino (1, 2 ou 3):");
         scanf("%d", &torreDestino);
         printf("\n");
 
         if (torreDestino == 0){
-        printf("\nDeseja recomeçar o jogo? (1 - sim | 0 - Não)"); 
+        printf("\nDeseja recomeçar o jogo? (1 - sim | 0 - Não)");
         scanf("%d", &escolha);
         if (escolha == 1){
-          printf("\033c");
           return main();
         }else{
           exit(0);
         }}
-      
+
         Pilha *pilhaOrigem, *pilhaDestino;
         switch (torreOrigem) {
             case 1:
@@ -208,7 +240,7 @@ int main() {
           printf("\033c");
           imprimirTorres((Pilha[]){torre1, torre2, torre3}, numDiscos);
           printf("\nParabéns! Número de movimentos: %d\n", numJogadas);
-          printf("\nDeseja recomeçar o jogo? (1 - sim | 0 - Não)"); 
+          printf("\nDeseja recomeçar o jogo? (1 - sim | 0 - Não)");
           scanf("%d", &escolha);
           if (escolha == 1){
             printf("\n");
